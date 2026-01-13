@@ -30,3 +30,86 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model ConsultaLog {
+  id            String   @id @default(cuid())
+  tipo          String   // cpf, nome, numero
+  dadosConsulta String   // JSON string com os dados da consulta
+  resultado     String   // JSON string com o resultado
+  sucesso       Boolean
+  tempoResposta Int      // em milissegundos
+  ip            String?
+  userAgent     String?
+  createdAt     DateTime @default(now())
+}
+
+model Estatisticas {
+  id             String   @id @default(cuid())
+  totalConsultas Int      @default(0)
+  consultasCPF   Int      @default(0)
+  consultasNome  Int      @default(0)
+  consultasNumero Int     @default(0)
+  consultasSucesso Int    @default(0)
+  consultasErro  Int      @default(0)
+  data           DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model APISettings {
+  id             String   @id @default(cuid())
+  apiKey         String   @unique
+  isActive       Boolean  @default(true)
+  maxRequestsPerHour Int @default(100)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model ApiKey {
+  id              String   @id @default(cuid())
+  key             String   @unique
+  nome            String
+  tipo            String   @default("premium") // premium, standard, admin
+  isActive        Boolean  @default(true)
+  rateLimit       Int      @default(100) // requests por hora
+  dailyLimit      Int      @default(1000) // requests por dia
+  totalRequests   Int      @default(0)
+  usedToday       Int      @default(0)
+  usedThisHour    Int      @default(0)
+  lastResetHour   DateTime?
+  lastResetDay    DateTime?
+  expiresAt       DateTime?
+  createdBy       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model ConsultaCache {
+  id              String   @id @default(cuid())
+  tipo            String   // cpf, nome, numero
+  query           String   // CPF, nome ou numero consultado
+  resultado        String   // JSON string com o resultado
+  sucesso         Boolean
+  tempoResposta   Int
+  createdAt       DateTime @default(now())
+  expiresAt       DateTime // Quando o cache expira
+  hitCount        Int      @default(0) // Quantas vezes foi usado
+}
+
+model AuditLog {
+  id              String   @id @default(cuid())
+  apiKeyId        String?
+  acao           String   // login, consulta, error, etc
+  tipo            String?
+  ip              String?
+  userAgent       String?
+  sucesso         Boolean
+  detalhes        String?  // JSON com detalhes
+  createdAt       DateTime @default(now())
+}
+
+model Configuracao {
+  id        String   @id @default(cuid())
+  chave     String   @unique
+  valor     String
+  updatedAt DateTime @updatedAt
+}

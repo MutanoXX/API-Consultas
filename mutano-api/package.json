@@ -1,0 +1,12 @@
+{
+  "name": "mutano-api",
+  "version": "1.0.0",
+  "description": "API MutanoX - Consultas de CPF, Nome e Número",
+  "main": "api.js",
+  "scripts": {
+    "start": "node api.js"
+  },
+  "dependencies": {},
+  "author": "@MutanoX",
+  "license": "ISC"
+}
